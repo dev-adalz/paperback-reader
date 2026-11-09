@@ -34,6 +34,12 @@ EPUB straight into your library**. No account, no cloud, no tracking.
 
 > **Search LibGen → Download EPUB → lands in your library → read offline forever.**
 
+<p align="center">
+  <img src="docs/screenshots/demo.gif" alt="Demo: searching LibGen, downloading an EPUB, and reading it" width="720">
+</p>
+
+<p align="center"><sub>Search LibGen, download an EPUB straight into your library, and start reading.</sub></p>
+
 ## Screenshots
 
 **Your library** — shelves group themselves, progress is remembered, and every book cover is
