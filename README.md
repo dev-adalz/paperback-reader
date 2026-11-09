@@ -1,43 +1,185 @@
-# Paperback
+<p align="center">
+  <img src="docs/screenshots/banner.jpg" alt="Paperback — a quiet place to read" width="840">
+</p>
 
-**A local-first EPUB reader that feels like a printed book — with free-book search built in.**
+<h1 align="center">Paperback</h1>
 
-Paperback is a desktop EPUB reader (Windows · Linux, plus a browser dev mode). It keeps your
-books, reading positions, highlights and notes on your own device, and fills your shelves in
-two ways: **import your own EPUB files**, or **search LibGen inside the app and download an
+<p align="center">
+  <b>A local-first EPUB reader that feels like a printed book — with free-book search built in.</b>
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="Apache-2.0"></a>
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-2f2b27" alt="Windows and Linux">
+  <img src="https://img.shields.io/badge/node-%E2%89%A520-3c873a" alt="Node 20 or newer">
+  <a href="https://github.com/dev-adalz/paperback-reader/releases"><img src="https://img.shields.io/github/v/release/dev-adalz/paperback-reader?label=release&color=2f6f4f" alt="Latest release"></a>
+  <a href="https://github.com/dev-adalz/paperback-reader/actions/workflows/build.yml"><img src="https://github.com/dev-adalz/paperback-reader/actions/workflows/build.yml/badge.svg" alt="Build installers"></a>
+</p>
+
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#screenshots">Screenshots</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#run-from-source">Run from source</a> ·
+  <a href="#build-installers">Build installers</a> ·
+  <a href="CONTRIBUTING.md">Contributing</a>
+</p>
+
+---
+
+Paperback is a desktop EPUB reader for Windows and Linux (plus a browser dev mode). It keeps
+your books, reading positions, highlights and notes on your own device, and fills your shelves
+in two ways: **import your own EPUB files**, or **search LibGen inside the app and download an
 EPUB straight into your library**. No account, no cloud, no tracking.
 
+> **Search LibGen → Download EPUB → lands in your library → read offline forever.**
+
+## Screenshots
+
+**Your library** — shelves group themselves, progress is remembered, and every book cover is
+pulled from the EPUB itself.
+
+![The Paperback library](docs/screenshots/library.jpg)
+
+**Reading** — two-page spreads with print typography: drop caps, oldstyle numerals,
+hyphenation, running heads, folios and a satin ribbon marker.
+
+![Reading Alice in Wonderland in a two-page spread](docs/screenshots/reader-spread.jpg)
+
+**Free books** — search LibGen without opening a browser. Results are filtered to EPUBs with a
+working source, ranked by how well they match, and download straight into your library.
+
+![Searching LibGen in the Free books panel](docs/screenshots/discover.jpg)
+
+**Make it yours** — six bundled fonts, eleven sizes, five themes (including e-ink and night),
+margins, spacing, alignment and one- or two-page layout.
+
+![Display settings sheet](docs/screenshots/reader-settings.jpg)
+
+---
+
+## Install
+
+### Windows
+
+1. Download `Paperback-<version>-Setup.exe` from
+   [Releases](https://github.com/dev-adalz/paperback-reader/releases).
+2. Run it — per-user install (no admin needed), pick your folder, desktop and Start-menu
+   shortcuts are created.
+3. The installer is **unsigned**, so SmartScreen may ask: *More info → Run anyway*.
+
+### Linux
+
+```bash
+chmod +x Paperback-<version>-x86_64.AppImage
+./Paperback-<version>-x86_64.AppImage
 ```
-Search LibGen  →  Download EPUB  →  lands in your library  →  read offline forever
+
+Optional desktop integration from a source checkout:
+
+```bash
+./scripts/install-linux.sh           # add Paperback to your app menu
+./scripts/install-linux.sh --remove  # remove it (your books are untouched)
 ```
+
+Both installers are built by [GitHub Actions](.github/workflows/build.yml) on every `v*` tag.
+
+### Python for LibGen search and downloads
+
+Search and download use [`libgen-api-enhanced`](https://github.com/onurhanak/libgen-api-enhanced)
+through a small Python helper (`engine/libgen.py`). **Everything else works without Python** —
+it is only needed for the *Free books* panel.
+
+Pick one:
+
+**A. A virtual environment inside the project (recommended for source installs)**
+
+```bash
+# Linux / macOS
+python3 -m venv .venv
+.venv/bin/pip install -r engine/requirements.txt
+
+# Windows (PowerShell)
+py -3 -m venv .venv
+.venv\Scripts\pip install -r engine\requirements.txt
+```
+
+Paperback uses `.venv` automatically when it exists.
+
+**B. Your system Python**
+
+```bash
+# Linux / macOS
+python3 -m pip install libgen-api-enhanced   # add --user if needed
+# Windows
+py -3 -m pip install libgen-api-enhanced
+```
+
+**C. Any interpreter, anywhere** — point Paperback at it:
+
+```bash
+PAPERBACK_PYTHON=/path/to/python               # Linux / macOS
+set PAPERBACK_PYTHON=C:\Python312\python.exe   # Windows (cmd)
+```
+
+`python3`, `python` and `py -3` on `PATH` are discovered automatically. If Python is missing,
+the panel says so instead of failing silently.
+
+> **Installed builds don't bundle Python** (it would add ~50 MB). Install
+> `libgen-api-enhanced` for your system Python once and the app will find it.
+
+---
+
+## Use it
+
+1. **First run** — the empty library offers *Search free books* and two public-domain classics.
+   Click **Search free books**, type a title or author, press Enter.
+2. Pick an **EPUB** result and press **Download**. The button shows every stage —
+   `Resolving… → 0% … 100% → Importing… → ✓ In library` — and the book opens from your shelf.
+3. **Or import your own:** drag `.epub` files onto the window, or use **Add EPUB**.
+4. Reading progress, highlights, notes and bookmarks are remembered per book, locally.
+
+### Where are my books?
+
+- Installed builds: `Documents/Paperback Library/` (`books/` + `metadata.json`).
+- Source builds: the project's `library/` folder.
+- Change it: **Shift-click the folder icon** in the library header, or click it when no folder
+  is set. Copy EPUBs into `<your folder>/books/` from anywhere — Paperback notices.
+
+### Keyboard shortcuts
+
+`←/→`, `Space`, `PgUp/PgDn` turn pages · `T` contents · `/` search · `N` notebook · `A`
+display settings · `B` bookmark · `F` full screen · `+/-` text size · `Esc` close.
 
 ---
 
 ## Features
 
-### Search & download free books (desktop)
+### Search and download free books (desktop)
+
 - **Built-in LibGen search** in the *Free books* panel — search everything, or restrict to
   title/author; filter by collection (fiction, comics, articles, magazines, standards).
 - **EPUB-only, curated results.** PDFs and rows with no working source are filtered out
   before they reach the UI; duplicates are removed; results are **ranked by how well the
   title/author match what you typed**, so the actual book comes first.
-- **One-click download, straight into your library** — no downloads folder detour, no manual
+- **One-click download, straight into your library** — no downloads-folder detour, no manual
   importing. The new book appears on the shelf and opens immediately.
 - **Live progress** on the button: resolving link → connecting → % downloaded → validating →
   importing → *✓ In library*.
-- **Careful downloader, not a browser hack:**
-  - the direct link is resolved by the `libgen-api-enhanced` library (server-rendered
-    session-bound keys stay in Python, not in JavaScript);
+- **A careful downloader, not a browser hack:**
+  - the direct link is resolved by `libgen-api-enhanced`, so session-bound keys stay in Python
+    and never touch the page;
   - only an **allowlist of LibGen / book-CDN hosts** can be contacted, re-checked on **every
     redirect hop**;
   - a download must be an **EPUB** (ZIP + `mimetype` + end-of-central-directory checks), capped
-    at 200 MB, with timeouts, cancel support, and temp files cleaned up;
+    at 200 MB, with timeouts, cancellation, and temp-file cleanup;
   - if a mirror is stale or the CDN doesn't carry the file, the app **retries the next
     approved mirror** automatically.
-- One download at a time, cancellable, with the copy-MD5 chip for power users.
+- One download at a time, cancellable, with a copy-MD5 chip for power users.
 
 ### Bring your own books
-- **Drag & drop** one or many `.epub` files anywhere on the window.
+
+- **Drag and drop** one or many `.epub` files anywhere on the window.
 - **Add EPUB** file picker (multi-select).
 - **A real library folder** — choose any folder (default: `Documents/Paperback Library` on
   installed builds). Paperback **watches `books/`** and indexes files you copy in from your
@@ -49,37 +191,38 @@ Search LibGen  →  Download EPUB  →  lands in your library  →  read offline
 - Two **public-domain sample classics** are included for a zero-setup first run.
 
 ### Reading experience
+
 - **Two-page spreads** on wide screens: hardcover board, spine-gutter shadow, page-curvature
   lighting, satin ribbon marker, and stacked page edges whose thickness shows how much you've
-  read vs. what's left.
+  read versus what's left.
 - **Paper**: warm fibre/grain texture; text and illustrations are multiplied onto the paper so
   ink and engravings look printed, not pasted.
 - **Print typography**: justified text with hyphenation, oldstyle numerals, ligatures,
   indented paragraphs without gaps, baseline-snapped page heights, widows/orphans control,
-  chapters start on a new page with a sunk opening, drop cap + small-caps lead-in, ❧ ornament
-  under chapter titles, ⁂ for scene breaks, running heads and folios.
+  chapters that start on a new page with a sunk opening, drop cap and small-caps lead-in, a ❧
+  ornament under chapter titles, ⁂ for scene breaks, running heads and folios.
 - **Page turns**: 3D page curl (drag it with a finger on touch screens), slide, e-ink
   (black/white refresh flash with ghosting), or instant.
-- **Display sheet**: 6 bundled fonts (SIL OFL, bundled so it typesets offline), 11 sizes,
-  line spacing, margins, alignment, 1 or 2 pages, themes (Paper, White, Sepia, E-ink, Night),
-  front-light brightness + warmth.
-- **Kindle-style conveniences**: tap zones, real print page numbers when the EPUB has them,
+- **Display sheet**: six bundled fonts (SIL OFL, so it typesets offline), eleven sizes, line
+  spacing, margins, alignment, one or two pages, five themes (Paper, White, Sepia, E-ink,
+  Night), and front-light brightness and warmth.
+- **Kindle-style conveniences**: tap zones, real print page numbers when the EPUB has them, a
   cycling status line (page / location / time left in chapter / time left in book), adaptive
   reading speed, progress scrubber with "Back to page N", table of contents with page numbers,
-  full-text search, highlights in 4 colours, notes, a notebook, dictionary lookup, footnote
+  full-text search, highlights in four colours, notes, a notebook, dictionary lookup, footnote
   pop-ups, bookmarks, and reading positions that survive font/size/screen changes.
-- **Keys**: `←/→`, `Space`, `PgUp/PgDn` turn · `T` contents · `/` search · `N` notebook ·
-  `A` display · `B` bookmark · `F` full screen · `+/-` size · `Esc` close.
 
 ### Shelves that sort themselves
-- **Offline auto-categorisation**: another book by the same author, a small learned
-  tf–idf model over title/publisher-subjects/description, and a few seed keywords. No AI
-  service, no network — it only guesses when one shelf clearly wins, otherwise the book stays
+
+- **Offline auto-categorisation**: another book by the same author, a small learned tf–idf
+  model over title/publisher subjects/description, and a few seed keywords. No AI service, no
+  network — it only guesses when one shelf clearly wins; otherwise the book stays
   Uncategorized.
-- Custom shelves, per-shelf views, reading progress, "in progress" and "finished" counts.
+- Custom shelves, per-shelf views, reading progress, and "in progress" / "finished" counts.
 - Library search, sort modes, and a "continue reading" row.
 
 ### Local-first, by architecture
+
 - Books and metadata live in **your** library folder; positions, highlights and notes live in
   the app's local storage. Nothing is uploaded.
 - The renderer **cannot** reach the network or filesystem directly: the Electron window is
@@ -91,99 +234,13 @@ Search LibGen  →  Download EPUB  →  lands in your library  →  read offline
 - Library catalogue writes are serialised and atomic (temp file → rename).
 
 ### Platform support
+
 - **Windows** — NSIS installer (x64): per-user install, choose your install folder, desktop
   and Start-menu shortcuts.
 - **Linux** — AppImage (x64): download, `chmod +x`, run. A from-source desktop-entry installer
   (`scripts/install-linux.sh`) is included for launcher integration.
 - **Browser dev mode** — `npm start` serves the reader at `http://localhost:3000` with
-  IndexedDB storage (reading/importing; downloads are desktop-only).
-
----
-
-## Install
-
-### Windows (installer)
-1. Download `Paperback-<version>-Setup.exe` from the **Releases** page (or build it yourself,
-   see below).
-2. Run it. You can pick the install directory; the app installs per-user (no admin needed).
-   The installer is **unsigned**, so Windows SmartScreen may ask: *More info → Run anyway*.
-3. Launch **Paperback** from the Start menu or desktop.
-
-> The Windows installer is built on Windows or in CI (`.github/workflows/build.yml`).
-> Cross-building it from Linux works when a **32-bit Wine prefix** is available
-> (`WINEPREFIX=~/.wine32 WINEARCH=win32 npx electron-builder --win nsis`).
-
-### Linux (AppImage)
-```bash
-chmod +x Paperback-<version>-x86_64.AppImage
-./Paperback-<version>-x86_64.AppImage
-```
-
-Optional desktop integration from a source checkout:
-
-```bash
-./scripts/install-linux.sh          # adds Paperback to your app menu
-./scripts/install-linux.sh --remove # removes it (your books are untouched)
-```
-
-### Python for LibGen search & downloads
-Search and download use [`libgen-api-enhanced`](https://github.com/onurhanak/libgen-api-enhanced)
-through a small Python helper (`engine/libgen.py`). **Everything else works without Python** —
-you just need it for the *Free books* panel.
-
-Pick one:
-
-**A. A virtual environment inside the project (recommended for source installs)**
-```bash
-# Linux / macOS
-python3 -m venv .venv
-.venv/bin/pip install -r engine/requirements.txt
-
-# Windows (PowerShell)
-py -3 -m venv .venv
-.venv\Scripts\pip install -r engine\requirements.txt
-```
-Paperback automatically uses `.venv` when it exists.
-
-**B. Your system Python**
-```bash
-# Linux / macOS
-python3 -m pip install libgen-api-enhanced   # add --user if needed
-# Windows
-py -3 -m pip install libgen-api-enhanced
-```
-
-**C. Any interpreter, anywhere** — point Paperback at it:
-```bash
-PAPERBACK_PYTHON=/path/to/python        # Linux / macOS
-set PAPERBACK_PYTHON=C:\Python312\python.exe   # Windows (cmd)
-```
-`python3`/`python`/`py -3` on `PATH` are also discovered automatically. If Python is missing,
-the panel tells you so instead of failing silently.
-
-> **Note for installed builds:** the AppImage/installer don't bundle Python (it would add
-> ~50 MB). Install `libgen-api-enhanced` for your system Python once and the app finds it.
-
----
-
-## Use it
-
-1. **First run** — the empty library offers *Search free books* and two public-domain
-   classics. Click **Search free books**, type a title or author, press Enter.
-2. Pick an **EPUB** result and press **Download**. Watch the button progress
-   (`Resolving… → 0% … 100% → Importing… → ✓ In library`) and open the book from the shelf.
-3. **Or import your own:** drag `.epub` files onto the window, or use **Add EPUB**.
-4. Reading progress, highlights, notes and bookmarks are remembered per book, locally.
-
-### Where are my books?
-- Installed builds: `Documents/Paperback Library/` (`books/` + `metadata.json`).
-- Source builds: the project's `library/` folder.
-- Change it: **Shift-click the folder icon** in the library header, or click it when no folder
-  is set. Copy EPUBs into `<your folder>/books/` from anywhere — Paperback notices.
-
-### Keyboard shortcuts
-`←/→`, `Space`, `PgUp/PgDn` turn pages · `T` contents · `/` search · `N` notebook · `A`
-display settings · `B` bookmark · `F` full screen · `+/-` text size · `Esc` close.
+  IndexedDB storage (reading and importing; downloads are desktop-only).
 
 ---
 
@@ -192,7 +249,7 @@ display settings · `B` bookmark · `F` full screen · `+/-` text size · `Esc` 
 Requirements: **Node.js 20+** and **npm**. Python 3.9+ only for LibGen search/downloads.
 
 ```bash
-git clone <your-repo-url> paperback
+git clone https://github.com/dev-adalz/paperback-reader.git paperback
 cd paperback
 npm install
 
@@ -208,8 +265,8 @@ sudo chown root:root node_modules/electron/dist/chrome-sandbox
 sudo chmod 4755 node_modules/electron/dist/chrome-sandbox
 ```
 
-(Linux users who install via `scripts/install-linux.sh` get a `--no-sandbox` fallback hint
-instead.)
+Linux users who install via `scripts/install-linux.sh` get a `--no-sandbox` fallback hint
+instead.
 
 ---
 
@@ -221,12 +278,13 @@ npm run dist:win     # → dist/Paperback-<version>-Setup.exe   (run on Windows)
 npm run dist:dir     # unpacked app for quick testing
 ```
 
-- Windows installers are best built **on Windows**; cross-building from Linux may work but
-  needs Wine for icon/version stamping.
-- A GitHub Actions workflow (`.github/workflows/build.yml`) builds both artifacts on every
-  `v*` tag and uploads them, so you don't need a Windows machine to release.
+- Windows installers are best built **on Windows**; cross-building from Linux works when a
+  **32-bit Wine prefix** is available
+  (`WINEPREFIX=~/.wine32 WINEARCH=win32 npx electron-builder --win nsis`).
+- The GitHub Actions workflow (`.github/workflows/build.yml`) builds both artifacts on every
+  `v*` tag and attaches them to a release, so you don't need a Windows machine to ship.
 - The app is packaged with `asar` disabled so the local API server and Python helper can be
-  read/spawned from the install directory.
+  read and spawned from the install directory.
 
 ---
 
@@ -252,18 +310,19 @@ engine/sources.js     result curation/ranking, allowed hosts, Python launcher, s
 server.js             the tiny static + /api/search server used by both modes
 samples/              two public-domain EPUBs for the first-run experience
 scripts/install-linux.sh   desktop-entry installer
+docs/screenshots/     the images in this README
 build/                app icons for the installer/AppImage
 ```
 
 ---
 
-## Legal & privacy
+## Legal and privacy
 
 - Paperback **does not host or distribute any books**. It is a reader, an importer, and a
   search client for LibGen, a third-party site.
 - LibGen indexes both public-domain works and copyrighted material. Downloading copyrighted
   material without permission may be illegal where you live. **You are responsible for what
-  you search for and download.** Prefer public-domain and author-free works.
+  you search for and download.** Prefer public-domain and freely licensed works.
 - Search queries leave your machine **only when you use the Free books panel** — they go to
   LibGen. Reading, importing and your library never touch the network.
 - No analytics, no accounts, no telemetry.
@@ -273,12 +332,12 @@ build/                app icons for the installer/AppImage
 ## Contributing
 
 Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Good first
-issues: new themes, better EPUB edge cases, accessibility, translations, tests for the
+issues: new themes, better EPUB edge cases, accessibility, translations, and tests for the
 categoriser and the downloader.
 
 ## Licence
 
-Apache License 2.0 — see [LICENSE](LICENSE). Bundled fonts are SIL Open Font License; the two
-sample books are public domain (Project Gutenberg). LibGen integration relies on
+Apache License 2.0 — see [LICENSE](LICENSE). Bundled fonts are under the SIL Open Font License;
+the two sample books are public domain (Project Gutenberg). LibGen integration relies on
 [libgen-api-enhanced](https://github.com/onurhanak/libgen-api-enhanced) (MIT). Full third-party
 attribution is in [NOTICE](NOTICE).
