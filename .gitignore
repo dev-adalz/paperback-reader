@@ -1,0 +1,26 @@
+# --- dependencies & local tooling ---
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# --- build output ---
+dist/
+out/
+*.AppImage
+*.exe
+*.blockmap
+*.yml.bak
+
+# --- user data (never commit a library) ---
+library/
+*.epub.part
+.paperback/
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/

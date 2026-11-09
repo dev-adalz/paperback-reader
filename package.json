@@ -1,0 +1,92 @@
+{
+  "name": "paperback",
+  "productName": "Paperback",
+  "desktopName": "paperback.desktop",
+  "description": "A local-first EPUB reader with built-in LibGen search, offline reading, and print-quality typography",
+  "version": "1.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "author": "Paperback contributors",
+  "type": "module",
+  "main": "electron/main.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "app": "electron .",
+    "dist": "electron-builder --linux AppImage",
+    "dist:linux": "electron-builder --linux AppImage",
+    "dist:win": "electron-builder --win nsis",
+    "dist:dir": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "^38.8.6",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "app.paperback.reader",
+    "productName": "Paperback",
+    "copyright": "Copyright © 2026 Paperback contributors",
+    "asar": false,
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "engine/**/*",
+      "js/**/*",
+      "css/**/*",
+      "fonts/**/*",
+      "vendor/**/*",
+      "build/**/*",
+      "samples/**/*",
+      "index.html",
+      "server.js",
+      "package.json",
+      "!engine/__pycache__/**",
+      "!**/*.pyc",
+      "!**/*.map"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "Paperback-${version}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Paperback",
+      "uninstallDisplayName": "Paperback EPUB Reader",
+      "deleteAppDataOnUninstall": false
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon-1024.png",
+      "category": "Office",
+      "synopsis": "Local-first EPUB reader with LibGen search",
+      "description": "Paperback is a local-first EPUB reader: search LibGen and download free EPUBs straight into your library, import your own files, and read offline with print-quality typography.",
+      "artifactName": "Paperback-${version}-${arch}.${ext}"
+    }
+  }
+}

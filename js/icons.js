@@ -1,0 +1,20 @@
+const s = (d, extra = '') => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
+export const icons = {
+  back: s('<path d="M15 5l-7 7 7 7"/>'),
+  toc: s('<path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r=".8" fill="currentColor"/><circle cx="4" cy="12" r=".8" fill="currentColor"/><circle cx="4" cy="18" r=".8" fill="currentColor"/>'),
+  search: s('<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>'),
+  notes: s('<path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8 12h8M8 16h6"/>'),
+  bookmark: s('<path d="M6 3h12v18l-6-4.5L6 21z"/>'),
+  bookmarkFill: s('<path d="M6 3h12v18l-6-4.5L6 21z" fill="currentColor"/>'),
+  aa: '<span class="aa-icon" aria-hidden="true"><span>A</span><span>a</span></span>',
+  full: s('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>'),
+  close: s('<path d="M6 6l12 12M18 6L6 18"/>'),
+  plus: s('<path d="M12 5v14M5 12h14"/>'),
+  trash: s('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'),
+  note: s('<path d="M4 20h4L19 9l-4-4L4 16z"/>'),
+  copy: s('<rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V4H4v12h4"/>'),
+  book: s('<path d="M4 5c3-1.5 6-1.5 8 .5 2-2 5-2 8-.5v14c-3-1.5-6-1.5-8 .5-2-2-5-2-8-.5z"/><path d="M12 5.5v14"/>'),
+  sun: s('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
+  share: s('<path d="M12 4v11M7 9l5-5 5 5M5 14v6h14v-6"/>'),
+  download: s('<path d="M12 4v12M6 11l6 6 6-6"/><path d="M5 20h14"/>'),
+};

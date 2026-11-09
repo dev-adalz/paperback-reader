@@ -1,0 +1,21 @@
+Paperback
+Copyright 2026 Paperback contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product includes or depends on software and assets developed by third
+parties, used under their respective licences:
+
+- JSZip (vendor/jszip.min.js) — MIT License,
+  Copyright (c) 2009-2016 Stuart Knightley, David Duponchel and contributors.
+
+- libgen-api-enhanced (Python dependency used by engine/libgen.py) — MIT License,
+  Copyright (c) Onur Hanak and contributors.
+
+- Literata, EB Garamond, Crimson Pro, Libre Baskerville, Spectral,
+  Atkinson Hyperlegible and Cormorant Garamond fonts (fonts/) —
+  SIL Open Font License 1.1.
+
+- "Alice's Adventures in Wonderland" by Lewis Carroll and
+  "Pride and Prejudice" by Jane Austen (samples/) — public domain,
+  sourced from Project Gutenberg.

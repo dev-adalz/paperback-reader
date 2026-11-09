@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a3d32"/><stop offset=".55" stop-color="#2a231d"/><stop offset="1" stop-color="#1a1613"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".38" r=".6">
+      <stop offset="0" stop-color="#f3d9b5" stop-opacity=".22"/><stop offset="1" stop-color="#f3d9b5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="paperL" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#efe6d3"/><stop offset=".78" stop-color="#f6efe1"/><stop offset="1" stop-color="#cdbf9f"/>
+    </linearGradient>
+    <linearGradient id="paperR" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#ebe1cc"/><stop offset=".78" stop-color="#f6efe1"/><stop offset="1" stop-color="#cdbf9f"/>
+    </linearGradient>
+    <linearGradient id="board" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8e3a2a"/><stop offset="1" stop-color="#5e2218"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7a1d1b"/><stop offset=".55" stop-color="#c2483f"/><stop offset="1" stop-color="#7a1d1b"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#000" flood-opacity=".45"/>
+    </filter>
+  </defs>
+
+  <!-- tile -->
+  <rect x="32" y="32" width="960" height="960" rx="216" fill="url(#bg)"/>
+  <rect x="32" y="32" width="960" height="960" rx="216" fill="url(#glow)"/>
+  <rect x="33.5" y="33.5" width="957" height="957" rx="214.5" fill="none" stroke="#fff" stroke-opacity=".07" stroke-width="3"/>
+
+  <g filter="url(#shadow)">
+    <!-- cover board -->
+    <path d="M512 400 C420 352 296 334 170 352 L170 748 C296 732 420 748 512 796 C604 748 728 732 854 748 L854 352 C728 334 604 352 512 400 Z" fill="url(#board)"/>
+    <!-- page block thickness -->
+    <path d="M512 382 C430 336 318 318 196 334 L196 724 C318 710 430 726 512 772 C594 726 706 710 828 724 L828 334 C706 318 594 336 512 382 Z" fill="#d8ccb2"/>
+    <path d="M512 370 C430 324 318 306 200 322 L200 712 C318 698 430 714 512 760 C594 714 706 698 824 712 L824 322 C706 306 594 324 512 370 Z" fill="#e4d9c3"/>
+    <!-- pages -->
+    <path d="M512 356 C430 310 318 292 206 308 L206 698 C318 684 430 700 512 746 Z" fill="url(#paperL)"/>
+    <path d="M512 356 C594 310 706 292 818 308 L818 698 C706 684 594 700 512 746 Z" fill="url(#paperR)"/>
+  </g>
+
+  <!-- text lines -->
+  <g fill="none" stroke="#a8977a" stroke-opacity=".55" stroke-width="11" stroke-linecap="round">
+    <path d="M262 382 C330 374 398 380 456 404"/>
+    <path d="M262 436 C330 428 398 434 456 458"/>
+    <path d="M262 490 C330 482 398 488 456 512"/>
+    <path d="M262 544 C330 536 398 542 456 566"/>
+    <path d="M262 598 C316 592 370 596 410 610"/>
+    <path d="M762 382 C694 374 626 380 568 404"/>
+    <path d="M762 436 C694 428 626 434 568 458"/>
+    <path d="M762 490 C694 482 626 488 568 512"/>
+    <path d="M762 544 C694 536 626 542 568 566"/>
+    <path d="M762 598 C708 592 654 596 614 610"/>
+  </g>
+
+  <!-- gutter shade -->
+  <path d="M470 330 C490 340 502 348 512 356 L512 746 C502 738 490 730 470 722 Z" fill="#000" fill-opacity=".08"/>
+  <path d="M554 330 C534 340 522 348 512 356 L512 746 C522 738 534 730 554 722 Z" fill="#000" fill-opacity=".08"/>
+
+  <!-- ribbon bookmark -->
+  <path d="M494 352 L530 352 L530 858 L512 834 L494 858 Z" fill="url(#ribbon)"/>
+  <path d="M494 352 L530 352 L530 372 L494 372 Z" fill="#000" fill-opacity=".18"/>
+</svg>

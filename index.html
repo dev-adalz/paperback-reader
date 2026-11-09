@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#2a2622">
+  <title>Paperback — EPUB Reader</title>
+  <link rel="icon" type="image/svg+xml" href="build/icon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="build/icons/64x64.png">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/book.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="vendor/jszip.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <main id="library">
+    <header class="lib-head">
+      <div class="brand"><span class="brand-mark">❦</span> Paperback</div>
+      <div class="lib-actions">
+        <span class="lib-status" role="status"></span>
+        <button class="add-btn"></button>
+        <input id="file" type="file" accept=".epub,application/epub+zip" multiple hidden>
+      </div>
+    </header>
+    <section class="lib-hero">
+      <h1>Your library</h1>
+      <p>Drop an EPUB anywhere on this page, or add one from your computer. Books stay on this device.</p>
+    </section>
+    <div class="shelf"></div>
+    <section class="lib-empty">
+      <div class="empty-book">❦</div>
+      <h2>Your shelves are empty</h2>
+      <p class="empty-lead">Start with a free book: search <b>LibGen</b> in Discover and download an EPUB — it lands in your library automatically and opens offline. Or drop your own <b>.epub</b> files anywhere on this page.</p>
+      <p class="empty-sub">You can also try a public‑domain classic:</p>
+      <div class="samples">
+        <button class="empty-discover">Search free books</button>
+        <button data-sample="samples/pride-and-prejudice.epub">Pride and Prejudice</button>
+        <button data-sample="samples/alice.epub">Alice’s Adventures in Wonderland</button>
+      </div>
+      <p class="empty-note">Everything stays on this device. No account, no uploads, no tracking.</p>
+    </section>
+    <div class="drop-hint"><div>Drop to add to your library</div></div>
+  </main>
+  <div id="reader" class="reader" hidden></div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+/* Book typography — applied inside the paginated flow. Publisher CSS is
+ * scoped & whitelisted and inserted *before* this sheet, so equal-specificity
+ * rules here win while publisher class rules (centring, run-ins…) still apply. */
+
+.flow {
+  position: absolute; top: 0; left: var(--vp-pad);
+  width: var(--flow-w); height: var(--text-h);
+  column-count: var(--cols); column-gap: var(--gap); column-fill: auto;
+  font-family: var(--font); font-size: var(--fs); line-height: var(--lh);
+  font-weight: var(--fw, 400);
+  color: var(--ink);
+  text-align: justify;
+  hyphens: auto; -webkit-hyphens: auto;
+  hyphenate-limit-chars: 6 3 3;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures contextual;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
+  hanging-punctuation: first allow-end last;
+  overflow-wrap: break-word;
+  orphans: 2; widows: 2;
+  text-shadow: var(--ink-bleed);
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  user-select: text;
+}
+.align-left .flow { text-align: left; }
+.no-hyphens .flow { hyphens: manual; -webkit-hyphens: manual; }
+
+.bk-chapter { display: block; margin: 0; padding: 0; }
+.bk-chapter > :first-child { margin-top: 0 !important; }
+
+/* paragraphs: indented, no gaps — like print */
+.bk-content p { margin: 0; text-indent: 1.35em; }
+.bk-content :is(h1,h2,h3,h4,h5,h6,hr,blockquote,figure,.bk-fig,ul,ol,table,div:has(> img)) + p,
+.bk-content p:first-child,
+.bk-content p.bk-first { text-indent: 0; }
+.bk-content blockquote { margin: .9em 1.6em; font-size: .96em; }
+.bk-content blockquote p { text-indent: 0; }
+.bk-content blockquote p + p { text-indent: 1.2em; }
+.bk-content ul, .bk-content ol { margin: .6em 0; padding-left: 1.6em; }
+.bk-content li { margin: .2em 0; }
+.bk-content li p { text-indent: 0; }
+.bk-content pre, .bk-content code { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: .86em; text-shadow: none; }
+.bk-content pre { white-space: pre-wrap; text-align: left; break-inside: avoid; }
+.bk-content table { border-collapse: collapse; font-size: .9em; margin: 1em auto; break-inside: avoid; }
+.bk-content td, .bk-content th { padding: .2em .5em; border-bottom: 1px solid var(--rule); text-indent: 0; text-align: left; }
+.bk-content sup, .bk-content sub { font-size: .68em; line-height: 0; }
+.bk-content a { color: inherit; text-decoration: none; }
+.bk-content a.bk-link { text-decoration: underline dotted; text-decoration-thickness: 1px; text-decoration-color: var(--rule) !important; text-underline-offset: .22em; cursor: pointer; }
+.bk-content sup a.bk-link, .bk-content a.bk-link:has(> sup) { color: var(--accent); text-decoration: none; padding: 0 .1em; }
+.bk-content a.bk-ext { text-decoration: underline; text-decoration-color: var(--rule); }
+.bk-content small { font-size: .82em; }
+.bk-content strong, .bk-content b { font-weight: max(650, calc(var(--fw, 400) + 200)); }
+.bk-content abbr, .bk-content .smcap, .bk-content .smallcaps, .bk-content .sc { font-variant-caps: all-small-caps; letter-spacing: .04em; }
+
+/* headings: centred, small caps, a sunk opening like a printed chapter */
+.bk-content h1, .bk-content h2, .bk-content h3, .bk-content h4, .bk-content h5, .bk-content h6 {
+  font-family: var(--font); font-weight: 400; line-height: 1.25;
+  text-align: center; text-indent: 0; hyphens: manual;
+  break-after: avoid; break-inside: avoid;
+  margin: 1.4em 0 .9em;
+}
+.bk-content h1 { font-size: 1.55em; letter-spacing: .02em; }
+.bk-content h2 { font-size: 1.32em; letter-spacing: .03em; }
+.bk-content h3 { font-size: 1.12em; font-variant-caps: small-caps; letter-spacing: .06em; }
+.bk-content h4, .bk-content h5, .bk-content h6 { font-size: 1em; font-style: italic; }
+.bk-content h1.bk-break, .bk-content h2.bk-break { break-before: column; margin-top: 2.2em; }
+.bk-content .bk-sink { margin-top: calc(var(--text-h) * .16) !important; }
+.bk-content h2 + h2, .bk-content h1 + h2, .bk-content h2 + h3 { margin-top: -.2em; }
+.bk-content :is(h1,h2) + :is(h1,h2) { font-style: italic; font-size: 1.2em; }
+
+/* ornament under chapter titles */
+.reader:not(.no-ornaments) .bk-content :is(h1,h2):not(:has(+ :is(h1,h2)))::after {
+  content: "❧"; display: block; margin: .55em auto 0; font-size: .7em; line-height: 1;
+  color: var(--accent); opacity: .75; font-style: normal; letter-spacing: 0;
+  font-family: "Cormorant Garamond", "EB Garamond", serif;
+}
+
+/* drop cap + small-caps lead-in on chapter openings */
+.reader:not(.no-ornaments) .bk-content p.bk-first::first-line { font-variant-caps: small-caps; letter-spacing: .045em; }
+.reader:not(.no-ornaments) .bk-content p.bk-first::first-letter {
+  float: left;
+  font-size: calc(var(--lh) * 3.05 / var(--fs) * 1em);
+  line-height: .78;
+  padding: .06em .08em 0 0;
+  margin-top: .02em;
+  color: var(--accent);
+  font-weight: 400;
+  font-variant-caps: normal;
+  font-family: "Cormorant Garamond", "EB Garamond", var(--font);
+}
+@supports (initial-letter: 3) {
+  .reader:not(.no-ornaments) .bk-content p.bk-first::first-letter {
+    float: none; initial-letter: 3; font-size: inherit; line-height: inherit; padding: 0 .1em 0 0; margin: 0;
+  }
+}
+
+/* scene breaks: a printer's asterism instead of a ruled line */
+.bk-content hr {
+  border: 0; height: auto; margin: 1.1em 0; text-align: center; overflow: visible;
+  break-after: avoid; background: none; color: var(--ink-soft);
+}
+.bk-content hr::after { content: "⁂"; font-size: 1.05em; letter-spacing: .3em; opacity: .7; }
+.no-ornaments .bk-content hr::after { content: "* * *"; }
+
+/* figures & images: printed on the paper */
+.bk-content img, .bk-content svg { max-width: 100%; max-height: calc(var(--text-h) - 2px); height: auto; }
+.bk-content img { vertical-align: baseline; filter: var(--img-filter); border-radius: 1px; }
+.bk-content img.bk-block-img { display: block; margin: .5em auto; max-height: calc(var(--text-h) - 2.2em); object-fit: contain; break-inside: avoid; }
+.bk-solo .bk-fig, .bk-solo .bk-fig * { margin: 0 !important; line-height: 0; }
+.bk-solo img.bk-block-img { margin: 0 auto; max-height: calc(var(--text-h) - 6px); }
+.bk-content .bk-fig { text-indent: 0; text-align: center; break-inside: avoid; margin: .8em 0; }
+.bk-content figure { margin: 1em 0; text-align: center; break-inside: avoid; }
+.bk-content figcaption, .bk-content .caption { font-size: .84em; font-style: italic; text-align: center; color: var(--ink-soft); margin-top: .4em; text-indent: 0; }
+.bk-content svg { display: block; margin: 0 auto; }
+.bk-content [style*="float"] { max-width: 50%; }
+.bk-content [style*="float:left"], .bk-content [style*="float: left"] { margin: .2em 1em .2em 0; }
+.bk-content [style*="float:right"], .bk-content [style*="float: right"] { margin: .2em 0 .2em 1em; }
+
+/* print page markers are invisible (used for real page numbers) */
+.bk-content .bk-pagemark, .bk-content .pagenum, .bk-content [data-epub-type~="pagebreak"] { display: inline; font-size: 0 !important; line-height: 0; position: static; }
+.bk-content .pagenum * { display: none; }
+
+/* Gutenberg boilerplate tidy-up */
+.bk-content .pg-boilerplate, .bk-content #pg-header, .bk-content #pg-footer { font-size: .85em; text-align: left; }
+
+/* highlights — like a soft highlighter pen on paper */
+.bk-content mark { color: inherit; background: none; }
+.bk-content mark.bk-hl { border-radius: .15em; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 0 .02em; mix-blend-mode: var(--hl-blend); }
+.bk-content mark.c-yellow { background: var(--hl-yellow); }
+.bk-content mark.c-blue { background: var(--hl-blue); }
+.bk-content mark.c-pink { background: var(--hl-pink); }
+.bk-content mark.c-orange { background: var(--hl-orange); }
+.bk-content mark.has-note { text-decoration: underline dotted var(--accent); text-underline-offset: .2em; }
+.bk-content mark.bk-hl:hover { filter: brightness(.96); cursor: pointer; }
+.bk-content mark.bk-flash { background: var(--hl-yellow); animation: bkflash 2.2s ease forwards; border-radius: .15em; }
+@keyframes bkflash { 0%, 60% { background: var(--hl-yellow); } 100% { background: transparent; } }
+
+::selection { background: var(--select); }
