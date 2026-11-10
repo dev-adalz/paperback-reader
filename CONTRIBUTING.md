@@ -6,8 +6,8 @@ ES modules, no bundler, no framework. If you can edit a file and reload, you can
 ## Ground rules
 
 - Be kind. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
-- **Never commit a library.** `library/`, `node_modules/`, `.venv/` and `dist/` are ignored;
-  don't add EPUB files you don't have the right to distribute.
+- **Never commit a library.** `library/`, `node_modules/`, `.venv/`, `engine/bin/` and `dist/`
+  are ignored; don't add EPUB files you don't have the right to distribute.
 - Keep the reader **local-first**: no telemetry, no accounts, no cloud calls, and no new
   runtime network access without a very good reason (and never from the renderer).
 

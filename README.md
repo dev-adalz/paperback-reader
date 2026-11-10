@@ -88,6 +88,9 @@ Optional desktop integration from a source checkout:
 ./scripts/install-linux.sh --remove  # remove it (your books are untouched)
 ```
 
+Installers include the built-in free-books search engine, so everything works right after
+installing — no Python or other dependencies to set up.
+
 Both installers are built by [GitHub Actions](.github/workflows/build.yml) on every `v*` tag.
 
 ### Python for LibGen search and downloads
@@ -95,6 +98,10 @@ Both installers are built by [GitHub Actions](.github/workflows/build.yml) on ev
 Search and download use [`libgen-api-enhanced`](https://github.com/onurhanak/libgen-api-enhanced)
 through a small Python helper (`engine/libgen.py`). **Everything else works without Python** —
 it is only needed for the *Free books* panel.
+
+**Installed builds don't need Python at all**: they carry the search engine as a frozen,
+self-contained binary (`engine/bin/`, built by `npm run freeze`). The options below are for
+running from source.
 
 Pick one:
 
@@ -130,9 +137,6 @@ set PAPERBACK_PYTHON=C:\Python312\python.exe   # Windows (cmd)
 
 `python3`, `python` and `py -3` on `PATH` are discovered automatically. If Python is missing,
 the panel says so instead of failing silently.
-
-> **Installed builds don't bundle Python** (it would add ~50 MB). Install
-> `libgen-api-enhanced` for your system Python once and the app will find it.
 
 ---
 
@@ -284,13 +288,17 @@ npm run dist:win     # → dist/Paperback-<version>-Setup.exe   (run on Windows)
 npm run dist:dir     # unpacked app for quick testing
 ```
 
+- Every `dist` script first freezes `engine/libgen.py` into a self-contained binary
+  (`npm run freeze`, PyInstaller), so installers ship LibGen search without requiring Python.
+  Cross-building the Windows installer on Linux skips that step (PyInstaller cannot
+  cross-compile) — build on Windows, or let CI do it, to bundle the engine there.
 - Windows installers are best built **on Windows**; cross-building from Linux works when a
   **32-bit Wine prefix** is available
   (`WINEPREFIX=~/.wine32 WINEARCH=win32 npx electron-builder --win nsis`).
 - The GitHub Actions workflow (`.github/workflows/build.yml`) builds both artifacts on every
   `v*` tag and attaches them to a release, so you don't need a Windows machine to ship.
-- The app is packaged with `asar` disabled so the local API server and Python helper can be
-  read and spawned from the install directory.
+- The app is packaged with `asar` disabled so the local API server and bundled search engine
+  can be read and spawned from the install directory.
 
 ---
 
@@ -313,9 +321,11 @@ electron/download.js  streaming downloader, redirect host revalidation, EPUB val
 electron/preload.cjs  the narrow (and only) bridge between page and app
 engine/libgen.py      search + direct-link resolution via libgen-api-enhanced
 engine/sources.js     result curation/ranking, allowed hosts, Python launcher, source adapter
+engine/bin/           frozen engine shipped in installed builds (build artifact, not committed)
 server.js             the tiny static + /api/search server used by both modes
 samples/              two public-domain EPUBs for the first-run experience
 scripts/install-linux.sh   desktop-entry installer
+scripts/freeze-engine.mjs PyInstaller freeze of the engine for installed builds
 docs/screenshots/     the images in this README
 build/                app icons for the installer/AppImage
 ```
