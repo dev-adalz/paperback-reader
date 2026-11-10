@@ -23,7 +23,7 @@ const FROZEN_ENGINE = path.join(
  *   4. python3 / python on macOS & Linux, the py launcher / python on Windows */
 const PYTHON_HINT =
   "LibGen search and downloads need Python 3 with the libgen-api-enhanced package " +
-  "(see README → \"LibGen search & downloads\").";
+  "(see README → \"Run from source\").";
 
 function pythonCandidates() {
   const isWin = process.platform === "win32";

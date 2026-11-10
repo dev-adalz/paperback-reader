@@ -93,51 +93,6 @@ installing — no Python or other dependencies to set up.
 
 Both installers are built by [GitHub Actions](.github/workflows/build.yml) on every `v*` tag.
 
-### Python for LibGen search and downloads
-
-Search and download use [`libgen-api-enhanced`](https://github.com/onurhanak/libgen-api-enhanced)
-through a small Python helper (`engine/libgen.py`). **Everything else works without Python** —
-it is only needed for the *Free books* panel.
-
-**Installed builds don't need Python at all**: they carry the search engine as a frozen,
-self-contained binary (`engine/bin/`, built by `npm run freeze`). The options below are for
-running from source.
-
-Pick one:
-
-**A. A virtual environment inside the project (recommended for source installs)**
-
-```bash
-# Linux / macOS
-python3 -m venv .venv
-.venv/bin/pip install -r engine/requirements.txt
-
-# Windows (PowerShell)
-py -3 -m venv .venv
-.venv\Scripts\pip install -r engine\requirements.txt
-```
-
-Paperback uses `.venv` automatically when it exists.
-
-**B. Your system Python**
-
-```bash
-# Linux / macOS
-python3 -m pip install libgen-api-enhanced   # add --user if needed
-# Windows
-py -3 -m pip install libgen-api-enhanced
-```
-
-**C. Any interpreter, anywhere** — point Paperback at it:
-
-```bash
-PAPERBACK_PYTHON=/path/to/python               # Linux / macOS
-set PAPERBACK_PYTHON=C:\Python312\python.exe   # Windows (cmd)
-```
-
-`python3`, `python` and `py -3` on `PATH` are discovered automatically. If Python is missing,
-the panel says so instead of failing silently.
-
 ---
 
 ## Use it
@@ -277,6 +232,27 @@ sudo chmod 4755 node_modules/electron/dist/chrome-sandbox
 
 Linux users who install via `scripts/install-linux.sh` get a `--no-sandbox` fallback hint
 instead.
+
+### Python for the Free books panel (source builds only)
+
+Installed builds bundle the search engine, but a source checkout does not — LibGen search
+and download use [`libgen-api-enhanced`](https://github.com/onurhanak/libgen-api-enhanced)
+through a small Python helper (`engine/libgen.py`). Everything else works without Python.
+To set it up:
+
+```bash
+# Linux / macOS
+python3 -m venv .venv
+.venv/bin/pip install -r engine/requirements.txt
+
+# Windows (PowerShell)
+py -3 -m venv .venv
+.venv\Scripts\pip install -r engine\requirements.txt
+```
+
+Paperback picks `.venv` up automatically. A system Python with `libgen-api-enhanced`
+installed works too, as does any interpreter you point at with `PAPERBACK_PYTHON`. If no
+Python is found, the *Free books* panel says so instead of failing silently.
 
 ---
 
