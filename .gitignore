@@ -8,6 +8,7 @@ __pycache__/
 # --- build output ---
 dist/
 out/
+engine/bin/
 *.AppImage
 *.exe
 *.blockmap

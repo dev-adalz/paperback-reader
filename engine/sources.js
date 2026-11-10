@@ -7,12 +7,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 const PYTHON_SCRIPT = path.join(__dirname, "libgen.py");
 
+/* PyInstaller build of libgen.py (see scripts/freeze-engine.mjs): installed
+ * builds ship it in engine/bin/, so LibGen search needs no local Python. */
+const FROZEN_ENGINE = path.join(
+  __dirname,
+  "bin",
+  `libgen-${process.platform}-${process.arch}${process.platform === "win32" ? ".exe" : ""}`
+);
+
 /* Python 3 + libgen-api-enhanced power LibGen search and downloads. The
- * interpreter is discovered per-platform (the library is not bundled):
+ * engine runs in the first candidate that exists and starts:
  *   1. PAPERBACK_PYTHON env var (any interpreter or absolute path)
- *   2. the project's .venv
- *   3. python3 / python on macOS & Linux, the py launcher / python on Windows
- * The first candidate that exists and starts is used. */
+ *   2. the project's .venv (source checkouts)
+ *   3. the frozen engine bundled with installed builds (engine/bin/)
+ *   4. python3 / python on macOS & Linux, the py launcher / python on Windows */
 const PYTHON_HINT =
   "LibGen search and downloads need Python 3 with the libgen-api-enhanced package " +
   "(see README → \"LibGen search & downloads\").";
@@ -21,12 +29,14 @@ function pythonCandidates() {
   const isWin = process.platform === "win32";
   const venv = path.join(PROJECT_ROOT, ".venv", isWin ? "Scripts" : "bin", isWin ? "python.exe" : "python");
   const list = [];
-  if (process.env.PAPERBACK_PYTHON) list.push({ cmd: process.env.PAPERBACK_PYTHON, args: [] });
-  list.push({ cmd: venv, args: [] });
+  if (process.env.PAPERBACK_PYTHON) list.push({ cmd: process.env.PAPERBACK_PYTHON, args: [], script: true });
+  list.push({ cmd: venv, args: [], script: true });
+  /* A whole interpreter in one file: libgen.py is already inside it. */
+  list.push({ cmd: FROZEN_ENGINE, args: [], script: false });
   if (isWin) {
-    list.push({ cmd: "py", args: ["-3"] }, { cmd: "python", args: [] });
+    list.push({ cmd: "py", args: ["-3"], script: true }, { cmd: "python", args: [], script: true });
   } else {
-    list.push({ cmd: "python3", args: [] }, { cmd: "python", args: [] });
+    list.push({ cmd: "python3", args: [], script: true }, { cmd: "python", args: [], script: true });
   }
   return list;
 }
@@ -211,11 +221,11 @@ async function runPython(payload) {
   throw error;
 }
 
-function runWithPython({ cmd, args }, payload) {
+function runWithPython({ cmd, args, script }, payload) {
   return new Promise((resolve, reject) => {
     const child = spawn(
       cmd,
-      [...args, PYTHON_SCRIPT],
+      script ? [...args, PYTHON_SCRIPT] : args,
       {
         cwd: PROJECT_ROOT,
         stdio: ["pipe", "pipe", "pipe"]

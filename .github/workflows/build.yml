@@ -25,18 +25,28 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 20
           cache: npm
 
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
       - name: Install dependencies
         run: npm ci
 
+      - name: Freeze the LibGen engine
+        run: npm run freeze
+
       - name: Build ${{ matrix.target }}
-        run: npx electron-builder --${{ matrix.target }}
+        # --publish never: this workflow publishes releases itself (job below);
+        # without it electron-builder tries to publish on tag builds and fails
+        # on the missing GH_TOKEN.
+        run: npx electron-builder --${{ matrix.target }} --publish never
         env:
           # No code signing configured; build unsigned artifacts.
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'

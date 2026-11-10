@@ -3,7 +3,7 @@
   "productName": "Paperback",
   "desktopName": "paperback.desktop",
   "description": "A local-first EPUB reader with built-in LibGen search, offline reading, and print-quality typography",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "license": "Apache-2.0",
   "author": "Paperback contributors",
@@ -16,10 +16,11 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "app": "electron .",
-    "dist": "electron-builder --linux AppImage",
-    "dist:linux": "electron-builder --linux AppImage",
-    "dist:win": "electron-builder --win nsis",
-    "dist:dir": "electron-builder --dir"
+    "freeze": "node scripts/freeze-engine.mjs",
+    "dist": "npm run freeze && electron-builder --linux AppImage",
+    "dist:linux": "npm run freeze && electron-builder --linux AppImage",
+    "dist:win": "node scripts/freeze-engine.mjs win && electron-builder --win nsis",
+    "dist:dir": "npm run freeze && electron-builder --dir"
   },
   "devDependencies": {
     "electron": "^38.8.6",
